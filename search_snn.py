@@ -16,34 +16,33 @@ def main():
     args = config.get_args()
 
     # define dataset
-    train_transform, valid_transform = data_transforms(args)
-    if args.dataset == 'cifar10':
-        trainset = torchvision.datasets.CIFAR10(root=os.path.join(args.data_dir, 'cifar10'), train=True,
-                                                download=True, transform=train_transform)
-        train_loader = torch.utils.data.DataLoader(trainset, batch_size=args.batch_size,
-                                                   shuffle=True, pin_memory=True, num_workers=4)
-        valset = torchvision.datasets.CIFAR10(root=os.path.join(args.data_dir, 'cifar10'), train=False,
-                                              download=True, transform=valid_transform)
-        val_loader = torch.utils.data.DataLoader(valset, batch_size=args.batch_size,
-                                                 shuffle=False, pin_memory=True, num_workers=4)
-    elif args.dataset == 'cifar100':
-        trainset = torchvision.datasets.CIFAR100(root=os.path.join(args.data_dir, 'cifar100'), train=True,
-                                                download=True, transform=train_transform)
-        train_loader = torch.utils.data.DataLoader(trainset, batch_size=args.batch_size,
-                                                   shuffle=True, pin_memory=True, num_workers=4)
-        valset = torchvision.datasets.CIFAR100(root=os.path.join(args.data_dir, 'cifar100'), train=False,
-                                              download=True, transform=valid_transform)
-        val_loader = torch.utils.data.DataLoader(valset, batch_size=args.batch_size,
-                                                 shuffle=False, pin_memory=True, num_workers=4)
-    elif args.dataset == 'tinyimagenet':
-        trainset = torchvision.datasets.ImageFolder(os.path.join('/gpfs/loomis/project/panda/shared/tiny-imagenet-200/train'),
-                                        train_transform)
-        valset = torchvision.datasets.ImageFolder(os.path.join('/gpfs/loomis/project/panda/shared/tiny-imagenet-200/val'),
-                                      valid_transform)
-        train_loader = torch.utils.data.DataLoader(trainset, batch_size=args.batch_size, shuffle=True,
-                                                   num_workers=4, pin_memory=True, sampler=None)
-        val_loader = torch.utils.data.DataLoader(valset, batch_size=args.batch_size, shuffle=False,
-                                                 num_workers=4, pin_memory=True)
+    #-------------------------------------------------------------------------
+    # 加载实验数据集
+    transform = torchvision.transforms.Compose(
+        [torchvision.transforms.Grayscale(),# 转成单通道的灰度图
+        # 把值转成Tensor
+        torchvision.transforms.ToTensor()])
+
+    dataset = torchvision.datasets.ImageFolder("/kaggle/input/ddos-2019/Dataset-4/Dataset-4", 
+                                                transform=transform)
+
+    # 切分，训练集和验证集
+    random.seed(0)
+    indices = list(range(len(dataset)))
+    random.shuffle(indices)
+    split_point = int(0.8*len(indices))
+    train_indices = indices[:split_point]
+    test_indices = indices[split_point:]
+
+    train_loader = torch.utils.data.DataLoader(dataset, batch_size=args.batch_size,
+                          sampler=torch.utils.data.SubsetRandomSampler(train_indices))
+    # 用于探索最佳网络结构
+    trainset = train_loader.dataset
+
+    val_loader = torch.utils.data.DataLoader(dataset, batch_size=args.batch_size,
+                         sampler=torch.utils.data.SubsetRandomSampler(test_indices))
+
+    #-------------------------------------------------------------------------
 
 
     if args.cnt_mat is None: # serach neuroncell if no predefined neuroncell
