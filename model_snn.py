@@ -122,7 +122,7 @@ class SNASNet(nn.Module):
             self.num_class = 10
             self.num_final_neuron = 100
             self.num_cluster = 10
-            self.in_channel = 3
+            self.in_channel = 1
             self.img_size = 32
             self.first_out_channel = 128
             self.channel_ratio = 2
