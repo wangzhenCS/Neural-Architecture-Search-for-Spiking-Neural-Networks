@@ -108,6 +108,8 @@ def main():
             validate(args, epoch, val_loader, model, criterion)
             utils.save_checkpoint({'state_dict': model.state_dict(), }, epoch + 1, tag=args.exp_name + '_super')
     utils.time_record(start)
+    # 保存模型训练结果
+    torch.save(model, '/kaggle/working/trained-model.pt')
 
 
 def train(args, epoch, train_data,  model, criterion, optimizer, scheduler):
@@ -129,8 +131,10 @@ def train(args, epoch, train_data,  model, criterion, optimizer, scheduler):
         top1.update(prec1.item(), n)
         train_loss += loss.item()
         reset_net(model)
+        
+    # 保存模型训练结果
+    torch.save(model, '/kaggle/working/trained-model'+str(epoch)+'.pt')
     print('train_loss: %.6f' % (train_loss / len(train_data)), 'train_acc: %.6f' % top1.avg)
-
 
 def validate(args, epoch, val_data, model, criterion):
     model.eval()
