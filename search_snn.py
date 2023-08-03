@@ -104,9 +104,11 @@ def main():
     for epoch in range(args.epochs):
         train(args, epoch, train_loader, model, criterion, optimizer, scheduler)
         scheduler.step()
-        if (epoch + 1) % args.val_interval == 0:
+        if (epoch + 1) % 3 == 0:
             validate(args, epoch, val_loader, model, criterion)
-            utils.save_checkpoint({'state_dict': model.state_dict(), }, epoch + 1, tag=args.exp_name + '_super')
+            #utils.save_checkpoint({'state_dict': model.state_dict(), }, epoch + 1, tag=args.exp_name + '_super')
+            # 保存模型训练结果
+            torch.save(model, '/kaggle/working/trained-model'+str(epoch+1)+'.pt')
     utils.time_record(start)
     # 保存模型训练结果
     torch.save(model, '/kaggle/working/trained-model.pt')
@@ -132,8 +134,6 @@ def train(args, epoch, train_data,  model, criterion, optimizer, scheduler):
         train_loss += loss.item()
         reset_net(model)
         
-    # 保存模型训练结果
-    torch.save(model, '/kaggle/working/trained-model'+str(epoch)+'.pt')
     print('train_loss: %.6f' % (train_loss / len(train_data)), 'train_acc: %.6f' % top1.avg)
 
 def validate(args, epoch, val_data, model, criterion):
