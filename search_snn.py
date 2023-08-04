@@ -81,7 +81,7 @@ def main():
         print ('test only...')
         validate(args, 0, val_loader, model, criterion)
         exit()
-
+'''
     if args.optimizer == 'sgd':
         optimizer = torch.optim.SGD(model.parameters(), args.learning_rate, args.momentum, args.weight_decay)
     elif args.optimizer == 'adam':
@@ -97,7 +97,14 @@ def main():
     else:
         print ("will be added...")
         exit()
+'''
+    # 设置优化器
+    optimizer = torch.optim.Adam(snn.parameters(), lr=0.001)
 
+    # 自动调整学习率
+    # 余弦退火, T_max是cos周期1/4（函数值从1到0需要经过的迭代周期）
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, 
+                    T_max=epochs, verbose=True)
 
 
     start = time.time()
@@ -119,7 +126,7 @@ def train(args, epoch, train_data,  model, criterion, optimizer, scheduler):
     train_loss = 0.0
     top1 = utils.AvgrageMeter()
     if (epoch + 1) % 10 == 0:
-        print('[%s%04d/%04d %s%f]' % ('Epoch:', epoch + 1, args.epochs, 'lr:', scheduler.get_lr()[0]))
+        print('[%s%04d/%04d %s%f]' % ('Epoch:', epoch + 1, args.epochs, 'lr:', scheduler.get_lr()[0]), flush=True)
 
     for step, (inputs, targets) in enumerate(train_data):
         inputs, targets = inputs.cuda(), targets.cuda()
@@ -134,7 +141,7 @@ def train(args, epoch, train_data,  model, criterion, optimizer, scheduler):
         train_loss += loss.item()
         reset_net(model)
         
-    print('train_loss: %.6f' % (train_loss / len(train_data)), 'train_acc: %.6f' % top1.avg)
+    print('train_loss: %.6f' % (train_loss / len(train_data)), 'train_acc: %.6f' % top1.avg, flush=True)
 
 def validate(args, epoch, val_data, model, criterion):
     model.eval()
@@ -152,7 +159,7 @@ def validate(args, epoch, val_data, model, criterion):
             val_top1.update(prec1.item(), n)
             reset_net(model)
         print('[Val_Accuracy epoch:%d] val_acc:%f'
-              % (epoch + 1,  val_top1.avg))
+              % (epoch + 1,  val_top1.avg), flush=True)
         return val_top1.avg
 
 
