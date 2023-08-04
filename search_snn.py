@@ -104,7 +104,7 @@ def main():
     # 自动调整学习率
     # 余弦退火, T_max是cos周期1/4（函数值从1到0需要经过的迭代周期）
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, 
-                    T_max=epochs, verbose=True)
+                    T_max=args.epochs, verbose=True)
 
 
     start = time.time()
