@@ -74,30 +74,6 @@ def main():
     model = SNASNet(args, best_neuroncell).cuda()
     criterion = nn.CrossEntropyLoss().cuda()
 
-
-    if args.savemodel_pth is not None:
-        print (torch.load(args.savemodel_pth).keys())
-        model.load_state_dict(torch.load(args.savemodel_pth)['state_dict'])
-        print ('test only...')
-        validate(args, 0, val_loader, model, criterion)
-        exit()
-'''
-    if args.optimizer == 'sgd':
-        optimizer = torch.optim.SGD(model.parameters(), args.learning_rate, args.momentum, args.weight_decay)
-    elif args.optimizer == 'adam':
-        optimizer = torch.optim.Adam(model.parameters(), args.learning_rate, weight_decay=args.weight_decay)
-    else:
-        print ("will be added...")
-        exit()
-
-    if args.scheduler == 'step':
-        scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[int(args.epochs*0.5),int(args.epochs*0.75)], gamma=0.1)
-    elif args.scheduler == 'cosine':
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer,T_max= int(args.epochs), eta_min= args.learning_rate*0.01)
-    else:
-        print ("will be added...")
-        exit()
-'''
     # 设置优化器
     optimizer = torch.optim.Adam(snn.parameters(), lr=0.001)
 
