@@ -75,7 +75,7 @@ def main():
     criterion = nn.CrossEntropyLoss().cuda()
 
     # 设置优化器
-    optimizer = torch.optim.Adam(snn.parameters(), lr=0.001)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
     # 自动调整学习率
     # 余弦退火, T_max是cos周期1/4（函数值从1到0需要经过的迭代周期）
