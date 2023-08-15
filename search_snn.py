@@ -23,7 +23,11 @@ def main():
         # 把值转成Tensor
         torchvision.transforms.ToTensor()])
 
-    dataset = torchvision.datasets.ImageFolder("/kaggle/input/ddos-2019/Dataset-4/Dataset-4", 
+    #dataset = torchvision.datasets.ImageFolder("/kaggle/input/ddos-2019/Dataset-4/Dataset-4", 
+    #                                            transform=transform)
+    #dataset = torchvision.datasets.ImageFolder("/kaggle/input/cic-2018-for-snn", 
+    #                                            transform=transform)
+    dataset = torchvision.datasets.ImageFolder("/kaggle/input/nsl-kdd-for-snn/data", 
                                                 transform=transform)
 
     # 切分，训练集和验证集
@@ -94,7 +98,7 @@ def main():
             torch.save(model, '/kaggle/working/trained-model'+str(epoch+1)+'.pt')
     utils.time_record(start)
     # 保存模型训练结果
-    torch.save(model, '/kaggle/working/trained-model.pt')
+    torch.save(model, '/kaggle/working/trained-NSL.pt')
 
 
 def train(args, epoch, train_data,  model, criterion, optimizer, scheduler):
