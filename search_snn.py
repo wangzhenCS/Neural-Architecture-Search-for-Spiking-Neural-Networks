@@ -25,7 +25,7 @@ def main():
 
     #dataset = torchvision.datasets.ImageFolder("/kaggle/input/ddos-2019/Dataset-4/Dataset-4", 
     #                                            transform=transform)
-    dataset = torchvision.datasets.ImageFolder("/kaggle/input/cic-2018-for-snn", 
+    dataset = torchvision.datasets.ImageFolder("/kaggle/input/cse-cic-ids2018-for-snn", 
                                                 transform=transform)
     #dataset = torchvision.datasets.ImageFolder("/kaggle/input/nsl-kdd-for-snn/data", 
     #                                            transform=transform)
