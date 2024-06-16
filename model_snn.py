@@ -119,11 +119,11 @@ class SNASNet(nn.Module):
         self.second_avgpooling = args.second_avgpooling
 
         if args.dataset == 'cifar10':
-            self.num_class = 10
+            self.num_class = 8
             self.num_final_neuron = 100
-            self.num_cluster = 10
+            self.num_cluster = 8
             self.in_channel = 1
-            self.img_size = 32
+            self.img_size = 24
             self.first_out_channel = 128
             self.channel_ratio = 2
             self.spatial_decay = 2 *self.second_avgpooling
