@@ -25,7 +25,7 @@ def main():
 
     #dataset = torchvision.datasets.ImageFolder("/kaggle/input/ddos-2019/Dataset-4/Dataset-4", 
     #                                            transform=transform)
-    dataset = torchvision.datasets.ImageFolder("/kaggle/input/cse-cic-ids2018-for-snn", 
+    dataset = torchvision.datasets.ImageFolder("/kaggle/input/img-ciciot2023/img", 
                                                 transform=transform)
     #dataset = torchvision.datasets.ImageFolder("/kaggle/input/nsl-kdd-for-snn/data", 
     #                                            transform=transform)
@@ -98,7 +98,7 @@ def main():
             #torch.save(model, '/kaggle/working/trained-model'+str(epoch+1)+'.pt')
     utils.time_record(start)
     # 保存模型训练结果
-    torch.save(model, '/kaggle/working/trained-CIC.pt')
+    torch.save(model, '/kaggle/working/CICIoT2023.pt')
 
 
 def train(args, epoch, train_data,  model, criterion, optimizer, scheduler):
